@@ -192,16 +192,25 @@
             text-transform: uppercase;
         }
 
-        @media screen and (max-width: 600px){
+        @media screen and (max-width: 900px){
             .book-container{
-                transform: scale(0.6) rotateX(10deg) rotateY(-5deg);
+                transform: scale(0.5) rotateX(10deg) rotateY(-5deg);
             }
             .book-container.open{
-                transform: translateX(80px) scale(0.6) rotateX(0deg) rotateY(0deg);
+                transform: translateX(150px) scale(0.5) rotateX(0deg) rotateY(0deg);
             }
             .hint {
                 font-size: 10px;
-                bottom: 10px;
+                bottom: 5px;
+            }
+        }
+
+        @media screen and (max-height: 500px) and (orientation: landscape) {
+            .book-container {
+                transform: scale(0.4) rotateX(10deg) rotateY(-5deg);
+            }
+            .book-container.open {
+                transform: translateX(180px) scale(0.4) rotateX(0deg) rotateY(0deg);
             }
         }
     </style>
@@ -217,7 +226,7 @@
             <div class="cover-wrapper">
                 <div class="cover-front">
                     <div class="gold-decoration">
-                        <h2 style="margin:0; font-weight: normal; letter-spacing: 4px;">A SIMPLE</h2>
+                        <h2 style="margin:0; font-weight: normal; letter-spacing: 4px; font-size: 2.5rem;">A SIMPLE</h2>
                         <h1 style="font-size: 2.5rem; margin: 10px 0;">THING</h1>
                         <div style="width: 40px; height: 1px; background: var(--gold);"></div>
                         <p style="font-size: 0.7rem; margin-top: 15px;">FOR YOU</p>
@@ -227,7 +236,7 @@
                 <div class="cover-back-page">
                     <div class="wish-text">
                         <h3 style="font-family: 'Times New Roman', serif; color: var(--book-cover);">Dearest One,</h3>
-                        <p>"Setiap lembar masa, moga bahagiamu kian subur. Selamat meraikan hari lahirmu yang istimewa."</p>
+                        <p>"Setiap tahun adalah bab baru dalam buku hidupmu. Semoga setiap halaman penuh dengan kebahagiaan dan cinta."</p>
                         <div style="margin-top: 30px; font-size: 1.5rem;">❦</div>
                     </div>
                 </div>
