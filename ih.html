@@ -192,25 +192,38 @@
             text-transform: uppercase;
         }
 
-        @media screen and (max-width: 900px){
+        @media screen and (max-width: 600px) and (orientation: potrait) {
             .book-container{
-                transform: scale(0.5) rotateX(10deg) rotateY(-5deg);
+                transform: scale(0.75) rotateX(10deg) rotateY(-5deg);
+                margin-top: -20px;
             }
             .book-container.open{
-                transform: translateX(150px) scale(0.5) rotateX(0deg) rotateY(0deg);
+                transform: translateX(180px) scale(0.75) rotateX(0deg) rotateY(0deg);
             }
             .hint {
-                font-size: 10px;
-                bottom: 5px;
+                font-size: 11px;
+                bottom: 30px;
+            }
+            .cover-back-page, .page-right {
+                padding: 25px !important; /* Menambah ruang untuk teks di kertas */
+            }
+            .polaroid {
+                width: 75% !important; /* Foto sedikit dikecilkan agar tidak penuh */
+            }
+            .wish-text p {
+                font-size: 0.85rem; /* Ukuran teks ucapan disesuaikan */
+            }
+            .hint {
+                bottom: 25px;
             }
         }
 
         @media screen and (max-height: 500px) and (orientation: landscape) {
             .book-container {
-                transform: scale(0.4) rotateX(10deg) rotateY(-5deg);
+                transform: scale(0.5) rotateX(10deg) rotateY(-5deg);
             }
             .book-container.open {
-                transform: translateX(180px) scale(0.4) rotateX(0deg) rotateY(0deg);
+                transform: translateX(220px) scale(0.5) rotateX(0deg) rotateY(0deg);
             }
         }
     </style>
