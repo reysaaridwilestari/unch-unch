@@ -11,6 +11,8 @@
             --paper: #fefcf0; /* Tekstur kertas antik */
             --gold: #d4af37;
             --spine-width: 8px;
+            --book-width: clamp(160px, 42vw, 350px);
+            --book-height: clamp(240px, 62vw, 500px);
         }
 
         body {
@@ -22,19 +24,20 @@
             margin: 0;
             perspective: 2500px;
             font-family: 'Georgia', serif;
+            overflow: hidden;
         }
 
         .book-container {
             position: relative;
-            width: 350px;
-            height: 500px;
+            width: var(--book-width);
+            height: var(--book-height);
             transition: transform 1.5s cubic-bezier(0.645, 0.045, 0.355, 1);
             transform-style: preserve-3d;
             transform: rotateX(10deg) rotateY(-5deg);
         }
 
         .book-container.open {
-            transform: translateX(175px) rotateX(0deg) rotateY(0deg);
+            transform: translateX(calc(var(--book-width) / 2)) rotateX(0deg) rotateY(0deg);
         }
 
         .book {
@@ -158,6 +161,8 @@
             line-height: 1.8;
             opacity: 0;
             transition: opacity 0.7s ease 1s;
+            font-size: clamp(0.7rem, 3vw, 1rem);
+            line-height: 1.5;
         }
 
         .center-fold {
