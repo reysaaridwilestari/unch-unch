@@ -10,8 +10,7 @@
             --book-cover: #3d0a0a;
             --paper: #fefcf0;
             --gold: #d4af37;
-            /* Warna bayangan lipatan */
-            --fold-shadow: rgba(0, 0, 0, 0.25);
+            --fold-dark: rgba(0, 0, 0, 0.35);
         }
 
         body {
@@ -26,6 +25,47 @@
             overflow: hidden;
         }
 
+        /* --- OVERLAY LOCK LANDSCAPE --- */
+        #landscape-lock {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #2c3e50;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            text-align: center;
+            visibility: hidden; /* Default sembunyi di Desktop */
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        /* Munculkan lock hanya di HP posisi Portrait */
+        @media screen and (max-width: 900px) and (orientation: portrait) {
+            #landscape-lock {
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+
+        .phone-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            animation: rotatePhone 2s infinite;
+        }
+
+        @keyframes rotatePhone {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(90deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* --- KONTEN BUKU --- */
         #main-wrapper {
             display: flex;
             justify-content: center;
@@ -33,10 +73,10 @@
             transition: all 0.5s ease;
         }
 
-        /* AUTO-ROTATE & SCALE UNTUK HP */
-        @media screen and (max-width: 900px) {
+        /* Skala buku di HP Landscape */
+        @media screen and (max-width: 900px) and (orientation: landscape) {
             #main-wrapper {
-                transform: rotate(90deg) scale(0.55); 
+                transform: scale(0.65); 
             }
         }
 
@@ -61,7 +101,7 @@
             cursor: pointer;
         }
 
-        /* HALAMAN KIRI (UCAPAN) */
+        /* SILUET LIPATAN PREMIUM */
         .cover-back-page {
             position: absolute;
             width: 100%;
@@ -76,13 +116,10 @@
             align-items: center;
             padding: 30px;
             box-sizing: border-box;
-            /* SILUET BATAS KIRI: Gradasi gelap di sisi kanan halaman kiri */
-            box-shadow: 
-                inset -60px 0 60px -30px var(--fold-shadow),
-                inset -1px 0 0 rgba(0,0,0,0.1);
+            background-image: linear-gradient(to right, transparent 85%, rgba(0,0,0,0.03) 100%);
+            box-shadow: inset -50px 0 50px -20px var(--fold-dark), inset -1px 0 2px rgba(0,0,0,0.2);
         }
 
-        /* HALAMAN KANAN (FOTO) */
         .page-right {
             position: absolute;
             width: 100%;
@@ -93,24 +130,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* SILUET BATAS KANAN: Gradasi gelap di sisi kiri halaman kanan */
-            box-shadow: 
-                inset 60px 0 60px -30px var(--fold-shadow),
-                inset 1px 0 0 rgba(0,0,0,0.1);
+            background-image: linear-gradient(to left, transparent 85%, rgba(0,0,0,0.03) 100%);
+            box-shadow: inset 50px 0 50px -20px var(--fold-dark), inset 1px 0 2px rgba(0,0,0,0.2);
         }
 
-        /* TULANG TENGAH (GARIS LIPATAN TAJAM) */
         .center-spine {
             position: absolute;
             left: 0;
-            width: 2px;
+            width: 3px;
             height: 100%;
-            background: rgba(0,0,0,0.15);
+            background: rgba(0,0,0,0.1);
             z-index: 20;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            box-shadow: 0 0 8px rgba(0,0,0,0.3);
         }
 
-        /* DEKORASI LAINNYA */
         .cover-wrapper {
             position: absolute;
             width: 100%;
@@ -187,6 +220,12 @@
 </head>
 <body>
 
+    <div id="landscape-lock">
+        <div class="phone-icon">📱🔄</div>
+        <h2>Mohon Miringkan HP Anda</h2>
+        <p>Gunakan mode landscape untuk membuka kejutan</p>
+    </div>
+
     <audio id="hbdAudio" loop>
         <source src="https://files.catbox.moe/9d7hp4.mp3" type="audio/mpeg">
     </audio>
@@ -202,20 +241,18 @@
                             <p style="font-size: 0.7rem;">FOR YOU</p>
                         </div>
                     </div>
-                    
                     <div class="cover-back-page">
                         <div class="wish-text">
-                            <h3 style="margin:0;">Dearest One,</h3>
-                            <p>"Setiap lembar masa, moga bahagiamu kian subur. Selamat meraikan hari lahirmu."</p>
-                            <div style="font-size: 1.5rem;">❦</div>
+                            <h3 style="margin:0; margin-bottom: 30px;">Dearest One,</h3>
+                            <p style="font-size: 1rem;">"Setiap tahun adalah peringatan bahwa kita memiliki kesempatan baru untuk membuat impian kita menjadi kenyataan."</p>
+                            <div style="font-size: 1.2rem; margin-top: 30px;">❦</div>
                         </div>
                     </div>
                 </div>
-
                 <div class="page-right">
                     <div class="center-spine"></div>
                     <div class="polaroid">
-                        <img src="https://i.ibb.co/v4m0Yv8/yy.jpg" alt="Memory">
+                        <img src="https://i.ibb.co.com/Z1vv5gYS/aku.jpg" alt="aku">
                         <div style="margin-top: 10px; text-align: center; font-family: 'Brush Script MT', cursive; font-size: 1.2rem;">
                             Happy Birthday! ✨
                         </div>
@@ -229,9 +266,15 @@
 
     <script>
         function openBook() {
+            // Mencegah buku dibuka jika dalam posisi portrait di HP
+            if (window.innerHeight > window.innerWidth && window.innerWidth < 900) {
+                return; 
+            }
+
             const cont = document.getElementById('bookCont');
             const audio = document.getElementById('hbdAudio');
             cont.classList.toggle('open');
+            
             if(cont.classList.contains('open')) { 
                 audio.play().catch(() => {}); 
             } else { 
