@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kado Buku Siluet Realistis</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+    <title>Kado Buku Ultra-Realistis</title>
     <style>
         :root {
             --bg-color: #aeb5b8;
-            --book-cover: #3d0a0a; 
-            --paper: #fefcf0; 
+            --book-cover: #3d0a0a;
+            --paper: #fefcf0;
             --gold: #d4af37;
         }
 
@@ -35,6 +34,7 @@
         }
 
         .book-container.open {
+            /* Nilai geser disesuaikan agar pas di tengah layar */
             transform: translateX(175px) rotateX(0deg) rotateY(0deg);
         }
 
@@ -44,6 +44,21 @@
             height: 100%;
             transform-style: preserve-3d;
             cursor: pointer;
+        }
+
+        /* Efek tumpukan kertas (Samping) */
+        .book::before {
+            content: "";
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 100%;
+            height: 98.5%;
+            background: #fff;
+            border-radius: 0 5px 5px 0;
+            transform: translateZ(-15px);
+            box-shadow: 10px 10px 40px rgba(0,0,0,0.4);
+            background-image: repeating-linear-gradient(90deg, transparent, transparent 1px, #ddd 1px, #ddd 2px);
         }
 
         .cover-wrapper {
@@ -86,32 +101,35 @@
             align-items: center;
             padding: 40px;
             box-sizing: border-box;
-            /* Siluet gelap di sisi kanan (lipatan) */
-            box-shadow: inset -15px 0 20px -10px rgba(0,0,0,0.3);
+            /* Bayangan lipatan di sisi kanan halaman kiri */
+            box-shadow: inset -30px 0 40px rgba(0,0,0,0.1);
         }
 
         .page-right {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 99%;
+            height: 99%;
+            top: 0.5%;
+            left: 0;
             background-color: var(--paper);
             border-radius: 2px 10px 10px 2px;
             z-index: 5;
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Siluet gelap di sisi kiri (lipatan) */
-            box-shadow: inset 15px 0 20px -10px rgba(0,0,0,0.3), 5px 5px 15px rgba(0,0,0,0.1);
+            /* Bayangan lipatan di sisi kiri halaman kanan */
+            box-shadow: inset 30px 0 40px rgba(0,0,0,0.1);
         }
 
-        /* Garis siluet sangat tipis di tengah agar terlihat ada pertemuan kertas */
-        .fold-shadow {
+        /* GARIS TENGAH (LIPATAN) YANG DIPERJELAS */
+        .center-fold {
             position: absolute;
             left: 0;
-            width: 1px;
+            width: 4px;
             height: 100%;
-            background: rgba(0,0,0,0.2);
-            z-index: 10;
+            background: linear-gradient(to right, rgba(0,0,0,0.2), rgba(0,0,0,0.05));
+            z-index: 20;
+            border-left: 1px solid rgba(0,0,0,0.1);
         }
 
         .gold-decoration {
@@ -125,13 +143,14 @@
             justify-content: center;
             align-items: center;
             color: var(--gold);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         .polaroid {
-            width: 70%;
+            width: 65%;
             background: white;
             padding: 10px 10px 45px 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             border: 1px solid #e0e0e0;
             transform: rotate(2deg);
             opacity: 0;
@@ -143,48 +162,44 @@
             height: auto;
             max-height: 280px;
             object-fit: cover;
+            filter: sepia(0.2) contrast(1.1);
         }
 
         .wish-text {
             color: #333;
             text-align: center;
+            font-style: italic;
+            line-height: 1.8;
             opacity: 0;
             transition: opacity 0.7s ease 1s;
         }
 
-        .wish-text h3 {
-            font-family: 'Playfair Display', serif;
-            margin-bottom: 10px;
-        }
-
-        .wish-text p {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            line-height: 1.6;
-        }
-
         .open .cover-wrapper { transform: rotateY(-180deg); }
-        .open .polaroid { opacity: 1; transform: rotate(-1deg) scale(1); }
+        .open .polaroid { opacity: 1; transform: rotate(-1deg); }
         .open .wish-text { opacity: 1; }
 
         .hint {
             position: absolute;
             bottom: 20px;
             color: #444;
-            font-size: 12px;
+            font-size: 13px;
             letter-spacing: 2px;
             text-transform: uppercase;
         }
 
+        /* --- PERBAIKAN UNTUK HP --- */
         @media screen and (max-width: 600px) {
             .book-container {
-                transform: scale(0.65) rotateX(10deg);
-                margin-left: -15px;
+                transform: scale(0.6) rotateX(10deg) rotateY(-5deg);
             }
             .book-container.open {
-                transform: translateX(130px) scale(0.65);
+                /* translateX dikurangi agar halaman kanan tidak keluar layar HP */
+                transform: translateX(100px) scale(0.6) rotateX(0deg) rotateY(0deg);
             }
-            .hint { bottom: 30px; }
+            .wish-text {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -199,27 +214,27 @@
             <div class="cover-wrapper">
                 <div class="cover-front">
                     <div class="gold-decoration">
-                        <h2 style="margin:0; font-weight: normal; letter-spacing: 4px; font-size: 2rem;">A SIMPLE</h2>
-                        <h1 style="font-size: 2.5rem; margin: 10px 0; font-family: 'Playfair Display';">GIFT</h1>
+                        <h2 style="margin:0; font-weight: normal; letter-spacing: 4px;">A SIMPLE</h2>
+                        <h1 style="font-size: 2.5rem; margin: 10px 0;">THING</h1>
                         <div style="width: 40px; height: 1px; background: var(--gold);"></div>
-                        <p style="font-size: 0.7rem; margin-top: 15px; letter-spacing: 3px;">FOR YOU</p>
+                        <p style="font-size: 0.7rem; margin-top: 15px;">FOR YOU</p>
                     </div>
                 </div>
                 
                 <div class="cover-back-page">
                     <div class="wish-text">
-                        <h3>Dearest One,</h3>
-                        <p>"Setiap tahun adalah bab baru dalam buku hidupmu. Semoga setiap halaman penuh dengan kebahagiaan dan cinta."</p>
-                        <div style="margin-top: 25px; font-size: 1.5rem; color: var(--gold);">❦</div>
+                        <h3 style="font-family: 'Times New Roman', serif; color: var(--book-cover);">Dearest One,</h3>
+                        <p>"Setiap lembar masa, moga bahagiamu kian subur. Selamat meraikan hari lahirmu yang istimewa."</p>
+                        <div style="margin-top: 30px; font-size: 1.5rem;">❦</div>
                     </div>
                 </div>
             </div>
 
             <div class="page-right">
-                <div class="fold-shadow"></div>
+                <div class="center-fold"></div>
                 <div class="polaroid">
-                    <img src="https://i.ibb.co.com/Z1vv5gYS/aku.jpg" alt="Foto">
-                    <div style="margin-top: 15px; text-align: center; font-family: 'Great Vibes', cursive; font-size: 1.6rem; color: #444;">
+                    <img src="https://i.ibb.co.com/Z1vv5gYS/aku.jpg" alt="aku">
+                    <div style="margin-top: 15px; text-align: center; font-family: 'Brush Script MT', cursive; font-size: 1.4rem;">
                         Happy Birthday! ✨
                     </div>
                 </div>
@@ -233,9 +248,15 @@
         function openBook() {
             const cont = document.getElementById('bookCont');
             const audio = document.getElementById('hbdAudio');
+            
             cont.classList.toggle('open');
-            if(cont.classList.contains('open')) { audio.play().catch(e => {}); } 
-            else { audio.pause(); audio.currentTime = 0; }
+            
+            if(cont.classList.contains('open')) { 
+                audio.play().catch(() => {}); 
+            } else { 
+                audio.pause();
+                audio.currentTime = 0; 
+            }
         }
     </script>
 </body>
