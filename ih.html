@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kado Buku - Landscape Mode</title>
+    <title>Kado Buku - Premium Siluet</title>
     <style>
         :root {
             --bg-color: #aeb5b8;
             --book-cover: #3d0a0a;
             --paper: #fefcf0;
             --gold: #d4af37;
+            /* Warna bayangan lipatan */
+            --fold-shadow: rgba(0, 0, 0, 0.25);
         }
 
         body {
@@ -24,29 +26,20 @@
             overflow: hidden;
         }
 
-        /* --- LOGIKA AUTO-ROTATE UNTUK HP --- */
-        /* Jika HP dalam posisi berdiri (Portrait), kita putar container-nya 90 derajat */
-        @media screen and (max-width: 900px) and (orientation: portrait) {
+        #main-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.5s ease;
+        }
+
+        /* AUTO-ROTATE & SCALE UNTUK HP */
+        @media screen and (max-width: 900px) {
             #main-wrapper {
-                transform: rotate(90deg);
-            }
-            .hint-rotate {
-                display: block !important;
+                transform: rotate(90deg) scale(0.55); 
             }
         }
 
-        .hint-rotate {
-            display: none;
-            position: fixed;
-            top: 10px;
-            color: #444;
-            font-size: 10px;
-            text-align: center;
-            width: 100%;
-            z-index: 100;
-        }
-
-        /* BUKU TETAP FORMAT PORTRAIT (BUKU TULIS) */
         .book-container {
             position: relative;
             width: 320px;
@@ -57,7 +50,6 @@
         }
 
         .book-container.open {
-            /* Geser ke kanan saat terbuka */
             transform: translateX(160px) rotateX(0deg) rotateY(0deg);
         }
 
@@ -69,17 +61,56 @@
             cursor: pointer;
         }
 
-        /* Siluet Lipatan Tengah */
-        .center-fold {
+        /* HALAMAN KIRI (UCAPAN) */
+        .cover-back-page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: var(--paper);
+            border-radius: 8px 2px 2px 8px;
+            transform: rotateY(180deg);
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            box-sizing: border-box;
+            /* SILUET BATAS KIRI: Gradasi gelap di sisi kanan halaman kiri */
+            box-shadow: 
+                inset -60px 0 60px -30px var(--fold-shadow),
+                inset -1px 0 0 rgba(0,0,0,0.1);
+        }
+
+        /* HALAMAN KANAN (FOTO) */
+        .page-right {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: var(--paper);
+            border-radius: 2px 8px 8px 2px;
+            z-index: 5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* SILUET BATAS KANAN: Gradasi gelap di sisi kiri halaman kanan */
+            box-shadow: 
+                inset 60px 0 60px -30px var(--fold-shadow),
+                inset 1px 0 0 rgba(0,0,0,0.1);
+        }
+
+        /* TULANG TENGAH (GARIS LIPATAN TAJAM) */
+        .center-spine {
             position: absolute;
             left: 0;
-            width: 4px;
+            width: 2px;
             height: 100%;
             background: rgba(0,0,0,0.15);
             z-index: 20;
-            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
         }
 
+        /* DEKORASI LAINNYA */
         .cover-wrapper {
             position: absolute;
             width: 100%;
@@ -105,36 +136,6 @@
             box-shadow: inset -5px 0 10px rgba(0,0,0,0.5);
         }
 
-        .cover-back-page {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: var(--paper);
-            border-radius: 8px 2px 2px 8px;
-            transform: rotateY(180deg);
-            backface-visibility: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 30px;
-            box-sizing: border-box;
-            box-shadow: inset -40px 0 50px rgba(0,0,0,0.1); /* Bayangan batas */
-        }
-
-        .page-right {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: var(--paper);
-            border-radius: 2px 8px 8px 2px;
-            z-index: 5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: inset 40px 0 50px rgba(0,0,0,0.1); /* Bayangan batas */
-        }
-
         .gold-decoration {
             border: 1px solid var(--gold);
             outline: 3px double var(--gold);
@@ -146,7 +147,7 @@
             justify-content: center;
             align-items: center;
             color: var(--gold);
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            text-align: center;
         }
 
         .polaroid {
@@ -157,6 +158,7 @@
             transform: rotate(2deg);
             opacity: 0;
             transition: all 0.7s ease 0.8s;
+            border: 1px solid #ddd;
         }
 
         .polaroid img { width: 100%; height: auto; display: block; }
@@ -185,8 +187,6 @@
 </head>
 <body>
 
-    <div class="hint-rotate">Miringkan HP untuk tampilan terbaik 🔄</div>
-
     <audio id="hbdAudio" loop>
         <source src="https://files.catbox.moe/9d7hp4.mp3" type="audio/mpeg">
     </audio>
@@ -197,7 +197,7 @@
                 <div class="cover-wrapper">
                     <div class="cover-front">
                         <div class="gold-decoration">
-                            <h2 style="margin:0; font-weight: normal; letter-spacing: 4px;">A SIMPLE</h2>
+                            <h2 style="margin:0; font-weight: normal; letter-spacing: 2px;">A SIMPLE</h2>
                             <h1 style="font-size: 2.2rem; margin: 10px 0;">THING</h1>
                             <p style="font-size: 0.7rem;">FOR YOU</p>
                         </div>
@@ -213,7 +213,7 @@
                 </div>
 
                 <div class="page-right">
-                    <div class="center-fold"></div>
+                    <div class="center-spine"></div>
                     <div class="polaroid">
                         <img src="https://i.ibb.co/v4m0Yv8/yy.jpg" alt="Memory">
                         <div style="margin-top: 10px; text-align: center; font-family: 'Brush Script MT', cursive; font-size: 1.2rem;">
