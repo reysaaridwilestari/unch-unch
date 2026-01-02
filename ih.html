@@ -2,13 +2,13 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Kado Buku Ultra-Realistis</title>
     <style>
         :root {
             --bg-color: #aeb5b8;
-            --book-cover: #3d0a0a;
-            --paper: #fefcf0;
+            --book-cover: #3d0a0a; /* Merah marun tua */
+            --paper: #fefcf0; /* Kertas antik */
             --gold: #d4af37;
         }
 
@@ -21,9 +21,10 @@
             margin: 0;
             perspective: 2500px;
             font-family: 'Georgia', serif;
-            overflow: hidden;
+            overflow: hidden; /* Mencegah layar geser di HP */
         }
 
+        /* CONTAINER UTAMA */
         .book-container {
             position: relative;
             width: 350px;
@@ -33,9 +34,9 @@
             transform: rotateX(10deg) rotateY(-5deg);
         }
 
+        /* EFEK SAAT BUKU DIBUKA */
         .book-container.open {
-            /* Nilai geser disesuaikan agar pas di tengah layar */
-            transform: translateX(175px) rotateX(0deg) rotateY(0deg);
+            transform: translateX(170px) rotateX(0deg) rotateY(0deg);
         }
 
         .book {
@@ -46,7 +47,7 @@
             cursor: pointer;
         }
 
-        /* Efek tumpukan kertas (Samping) */
+        /* TEKSTUR TUMPUKAN KERTAS DI SAMPING */
         .book::before {
             content: "";
             position: absolute;
@@ -61,6 +62,7 @@
             background-image: repeating-linear-gradient(90deg, transparent, transparent 1px, #ddd 1px, #ddd 2px);
         }
 
+        /* SAMPUL & HALAMAN KIRI */
         .cover-wrapper {
             position: absolute;
             width: 100%;
@@ -101,10 +103,11 @@
             align-items: center;
             padding: 40px;
             box-sizing: border-box;
-            /* Bayangan lipatan di sisi kanan halaman kiri */
-            box-shadow: inset -30px 0 40px rgba(0,0,0,0.1);
+            /* Siluet batas lipatan kiri */
+            box-shadow: inset -40px 0 50px rgba(0,0,0,0.15), inset -1px 0 2px rgba(0,0,0,0.2);
         }
 
+        /* HALAMAN KANAN */
         .page-right {
             position: absolute;
             width: 99%;
@@ -117,19 +120,19 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Bayangan lipatan di sisi kiri halaman kanan */
-            box-shadow: inset 30px 0 40px rgba(0,0,0,0.1);
+            /* Siluet batas lipatan kanan */
+            box-shadow: inset 40px 0 50px rgba(0,0,0,0.15), inset 1px 0 2px rgba(0,0,0,0.2);
         }
 
-        /* GARIS TENGAH (LIPATAN) YANG DIPERJELAS */
+        /* GARIS TENGAH (LIPATAN BUKU) */
         .center-fold {
             position: absolute;
             left: 0;
-            width: 4px;
+            width: 3px;
             height: 100%;
-            background: linear-gradient(to right, rgba(0,0,0,0.2), rgba(0,0,0,0.05));
+            background: rgba(0,0,0,0.2);
             z-index: 20;
-            border-left: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
         }
 
         .gold-decoration {
@@ -187,18 +190,28 @@
             text-transform: uppercase;
         }
 
-        /* --- PERBAIKAN UNTUK HP --- */
+        /* --- PERBAIKAN RESPONSIVE AGAR TIDAK KEPOTONG DI HP --- */
         @media screen and (max-width: 600px) {
             .book-container {
-                transform: scale(0.6) rotateX(10deg) rotateY(-5deg);
+                /* Perkecil buku agar muat lebar layar HP */
+                transform: scale(0.55) rotateX(10deg) rotateY(-5deg);
+                /* Geser posisi dasar ke kiri agar saat terbuka tidak "lari" ke kanan */
+                left: -65px; 
             }
+
             .book-container.open {
-                /* translateX dikurangi agar halaman kanan tidak keluar layar HP */
-                transform: translateX(100px) scale(0.6) rotateX(0deg) rotateY(0deg);
+                /* Geser hanya sedikit ke kanan agar halaman kanan tetap masuk layar */
+                transform: translateX(65px) scale(0.55) rotateX(0deg) rotateY(0deg);
             }
+
             .wish-text {
-                padding: 10px;
-                font-size: 0.9rem;
+                padding: 15px;
+                font-size: 0.85rem;
+            }
+
+            .polaroid {
+                width: 75%; /* Sedikit diperbesar di layar kecil agar foto jelas */
+                padding: 8px 8px 35px 8px;
             }
         }
     </style>
@@ -215,17 +228,17 @@
                 <div class="cover-front">
                     <div class="gold-decoration">
                         <h2 style="margin:0; font-weight: normal; letter-spacing: 4px;">A SIMPLE</h2>
-                        <h1 style="font-size: 2.5rem; margin: 10px 0;">THING</h1>
+                        <h1 style="font-size: 2.5rem; margin: 10px 0;">GIFT</h1>
                         <div style="width: 40px; height: 1px; background: var(--gold);"></div>
-                        <p style="font-size: 0.7rem; margin-top: 15px;">FOR YOU</p>
+                        <p style="font-size: 1rem; margin-top: 15px;">FOR YOU</p>
                     </div>
                 </div>
                 
                 <div class="cover-back-page">
                     <div class="wish-text">
-                        <h3 style="font-family: 'Times New Roman', serif; color: var(--book-cover);">Dearest One,</h3>
+                        <h3 style="font-family: 'Times New Roman', serif; color: var(--book-cover); margin-top: 0;">Dearest One,</h3>
                         <p>"Setiap lembar masa, moga bahagiamu kian subur. Selamat meraikan hari lahirmu yang istimewa."</p>
-                        <div style="margin-top: 30px; font-size: 1.5rem;">❦</div>
+                        <div style="margin-top: 20px; font-size: 1.5rem;">❦</div>
                     </div>
                 </div>
             </div>
@@ -252,7 +265,10 @@
             cont.classList.toggle('open');
             
             if(cont.classList.contains('open')) { 
-                audio.play().catch(() => {}); 
+                audio.play().catch(() => {
+                    // Penanganan jika browser memblokir autoplay
+                    console.log("Audio play diblokir browser");
+                }); 
             } else { 
                 audio.pause();
                 audio.currentTime = 0; 
