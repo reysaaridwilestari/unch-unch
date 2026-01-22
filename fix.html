@@ -11,24 +11,21 @@
         :root {
             --bg-game: #fff5f5;
             --btn-pink: #db2777;
-            --bg-book: #d1d8dc;
+            --bg-book: #aeb5b8;
             --book-cover: #3d0a0a;
             --paper: #fefcf0;
             --gold: #d4af37;
             --leather: url('https://www.transparenttextures.com/patterns/leather.png');
             --paper-texture: url('https://www.transparenttextures.com/patterns/cream-paper.png');
-            --book-width: 140px;
-            --book-height: 200px
         }
 
         body {
             margin: 0; padding: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
+            overflow: hidden;
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh;
             background-color: var(--bg-game);
-            transition: background 1s ease;
             touch-action: manipulation;
         }
 
@@ -38,57 +35,40 @@
             backdrop-filter: blur(15px);
             border: 2px solid #ffffff;
             border-radius: 30px;
-            padding: 25px 20px;
+            padding: 20px;
             box-shadow: 0 20px 60px rgba(255, 182, 193, 0.2);
             text-align: center;
             width: 85%;
-            max-width: 280px;
-            z-index: 10;
+            max-width: 300px;
+            z-index: 100;
         }
 
-        /* Update Teks Cocokkan Kartu */
-        .game-title {
-            font-size: 1.1rem; 
-            font-weight: 800; 
-            color: var(--btn-pink); 
-            letter-spacing: 1.5px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
+        .btn-action { background: var(--btn-pink); color: white; border: none; padding: 12px 24px; border-radius: 50px; font-weight: 600; cursor: pointer; margin-top: 15px; text-transform: uppercase; font-size: 0.75rem; width: 100%; }
 
-        .btn-action {
-            background: var(--btn-pink); color: white; border: none; padding: 12px 24px;
-            border-radius: 50px; font-weight: 600; cursor: pointer; margin-top: 15px;
-            text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;
-        }
-
-        /* --- GAME SECTION --- */
-        #game-section { display: flex; flex-direction: column; align-items: center; }
+        /* --- GAME GRID --- */
+        #game-section { display: flex; flex-direction: column; align-items: center; width: 100%; }
         .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 15px 0; }
-        .card { width: 60px; height: 60px; perspective: 1000px; }
+        .card { width: 65px; height: 65px; perspective: 1000px; }
         .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.5s; transform-style: preserve-3d; }
         .card.flipped .card-inner { transform: rotateY(180deg); }
-        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 10px; display: flex; justify-content: center; align-items: center; }
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; }
         .card-front { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); border: 1px solid white; }
-        .card-back { background: #ffffff; transform: rotateY(180deg); font-size: 1.5rem; }
+        .card-back { background: #ffffff; transform: rotateY(180deg); }
         .card.matched { opacity: 0; transition: 0.5s; pointer-events: none; }
-        #reveal-game-btn { display: none; }
-
-        /* --- GREETING SECTION --- */
-        #greeting-section { display: none; opacity: 0; flex-direction: column; align-items: center; transition: 0.8s; }
 
         /* --- BOOK SECTION --- */
         #book-section { 
-            display: none; width: 100vw; height: 100vh; 
+            display: none; width: 100%; height: 100%; 
             justify-content: center; align-items: center; 
-            perspective: 1500px; opacity: 0; transition: opacity 1s;
+            perspective: 2000px; opacity: 0; transition: opacity 1s;
         }
         
         .book { 
             position: relative; 
-            width: clamp(230px, 38vw, 300px); 
-            height: clamp(330px, 52vw, 400px);
-            transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1); 
+            width: 45%; /* Ukuran relatif terhadap layar */
+            aspect-ratio: 2/3; /* Menjaga proporsi buku */
+            max-width: 250px;
+            transition: transform 1.5s cubic-bezier(0.645, 0.045, 0.355, 1); 
             transform-style: preserve-3d; 
         }
 
@@ -105,47 +85,67 @@
             position: absolute; width: 100%; height: 100%; 
             backface-visibility: hidden; display: flex; 
             flex-direction: column; justify-content: center; 
-            align-items: center; padding: 15px; box-sizing: border-box; 
+            align-items: center; padding: 10px; box-sizing: border-box; 
         }
 
         .back { transform: rotateY(180deg); }
         
-        .flipped .front { box-shadow: inset -150px 0 50px rgba(0,0,0,0.1); }
-        .flipped .back { box-shadow: inset 150px 0 50px rgba(0,0,0,0.05); }
+        .cover-front { 
+            background-color: var(--book-cover); 
+            background-image: var(--leather); 
+            color: var(--gold); 
+            border-radius: 2px 8px 8px 2px; 
+            z-index: 4;
+            box-shadow: inset -5px 0 15px rgba(0,0,0,0.5);
+        }
 
-        .cover-front { background-color: var(--book-cover); background-image: var(--leather); color: var(--gold); border-radius: 0 5px 5px 0; z-index: 4; }
-        .cover-back { background-color: var(--book-cover); background-image: var(--leather); color: var(--gold); border-radius: 5px 0 0 5px; }
+        .cover-back {
+            background-color: var(--book-cover); 
+            background-image: var(--leather); 
+            color: var(--gold); 
+            border-radius: 8px 2px 2px 8px; 
+            box-shadow: inset 5px 0 15px rgba(0,0,0,0.5);
+        }
         
-        .page-paper { background-color: var(--paper); background-image: var(--paper-texture); }
-        .page-paper.front { border-radius: 0 5px 5px 0; }
-        .page-paper.back { border-radius: 5px 0 0 5px; border-right: 1px solid rgba(0,0,0,0.05); }
+        .gold-decoration { 
+            border: 1px solid var(--gold); 
+            outline: 2px double var(--gold); 
+            outline-offset: -5px; 
+            width: 90%; height: 90%; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
 
-        .gold-decoration { border: 1px solid var(--gold); outline: 3px double var(--gold); outline-offset: -8px; width: 90%; height: 92%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .page-paper { 
+            background-color: var(--paper); 
+            background-image: var(--paper-texture);
+            border-radius: 0 5px 5px 0;
+            width: 98%; height: 98%; top: 1%;
+            box-shadow: inset 10px 0 20px rgba(0,0,0,0.05);
+        }
+        
+        .back.page-paper { border-radius: 5px 0 0 5px; }
         
         .polaroid { 
-            width: 70%; 
-            background: white; 
-            padding: 5px 5px 18px 5px; 
-            box-shadow: 0 3px 8px rgba(0,0,0,0.12); 
-            transform: rotate(var(--r, 0deg)); 
-            border: 1px solid #eee;
+            width: 90%; background: white; padding: 5px 5px 15px 5px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+            transform: rotate(var(--r, 0deg)); border: 1px solid #eee;
         }
-        .polaroid img { 
-            width: 100%; 
-            aspect-ratio: 3/4; 
-            object-fit: cover; 
-        }
-        .polaroid p { 
-            margin: 8px 0 0 0; 
-            font-family: 'Playfair Display', serif; 
-            font-size: 0.65rem; 
-            color: #444; 
-        }
+        .polaroid img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+        .polaroid p { margin: 5px 0 0 0; font-family: 'Playfair Display', serif; font-size: 0.6rem; color: #444; font-weight: bold; }
 
         .flipped { transform: rotateY(-180deg); z-index: 10 !important; }
 
-        #landscape-lock { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a1a1a; color: white; display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; text-align: center; padding: 20px; box-sizing: border-box; }
-        @media screen and (max-width: 900px) and (orientation: portrait) { .show-lock #landscape-lock { display: flex; } }
+        /* Rotasi HP */
+        #landscape-lock { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.9); color: white; 
+            display: none; flex-direction: column; justify-content: center; align-items: center; 
+            z-index: 9999; text-align: center; padding: 20px; box-sizing: border-box;
+        }
+        
+        @media screen and (max-width: 900px) and (orientation: portrait) { 
+            body.show-lock #landscape-lock { display: flex; } 
+        }
         
         #p1 { z-index: 4; } #p2 { z-index: 3; } #p3 { z-index: 2; } #p4 { z-index: 1; }
     </style>
@@ -156,36 +156,40 @@
 
     <div id="game-section">
         <div class="container">
-            <p class="game-title">COCOKKAN KARTU</p>
+            <p style="font-size: 1rem; font-weight: 800; color: var(--btn-pink); letter-spacing: 1.5px; margin-bottom: 15px;">COCOKKAN KARTU</p>
             <div class="grid" id="game-grid"></div>
-            <button id="reveal-game-btn" class="btn-action" onclick="showGreeting()">NEXT</button>
+            <button id="reveal-game-btn" class="btn-action" style="display:none;" onclick="showGreeting()">NEXTTTT</button>
         </div>
     </div>
 
-    <div id="greeting-section">
+    <div id="greeting-section" style="display:none; opacity:0; transition: 0.8s; width: 100%; justify-content: center;">
         <div class="container">
-            <h2 style="font-family: 'Playfair Display'; color: var(--btn-pink); font-weight: 800;">WIDDIHHH</h2>
-            <p style="font-size: 0.85rem; color: #64748b;">Lanjutin yaaa</p>
-            <button class="btn-action" onclick="showAlbum()">NEXT</button>
+            <h2 style="font-family: 'Playfair Display'; color: var(--btn-pink); font-weight: 800; margin: 0;">WIIIDDIIIHHH!</h2>
+            <p style="font-size: 0.85rem; color: #64748b; margin: 10px 0;">Satu langkah lagi...</p>
+            <button class="btn-action" onclick="showAlbum()">NEXTTTT</button>
         </div>
     </div>
 
     <div id="book-section">
         <div id="landscape-lock">
-            <p style="font-size: 30px;">📱🔄</p>
-            <h3 style="font-family: 'Playfair Display';">MIRINGIN HPNYA YAAAAAA</h3>
-            <p style="font-size: 0.8rem; color: #888;">Jadiin landscape</p>
+            <div style="font-size: 40px; margin-bottom: 10px;">📱🔄</div>
+            <h3 style="font-family: 'Playfair Display'; margin: 0;">Putar HP kamu jadi Miring (Landscape)</h3>
+            <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.8;">Biar albumnya kelihatan jelas ya!</p>
         </div>
         
         <div class="book" id="book">
             <div class="page" id="p1" onclick="nextPage(1)">
                 <div class="front cover-front">
                     <div class="gold-decoration">
-                        <h1 style="font-size: 1.5rem; font-family: 'Playfair Display';">SIMPLE GIFT</h1>
+                        <h2 style="margin:0; font-weight: normal; letter-spacing: 2px; font-size: 0.8rem;">A SIMPLE</h2>
+                        <h1 style="font-size: 1.4rem; margin: 5px 0;">GIFT</h1>
+                        <p style="font-size: 0.5rem;">FOR YOU</p>
                     </div>
                 </div>
                 <div class="back page-paper">
-                    <p style="font-style: italic; font-size: 0.75rem; padding: 20px; text-align: center; color: #555;">"Semoga hari istimewamu seindah senyumanmu. Teruslah bersinar, teruslah bermimpi, dan jadilah versi terbaik dari dirimu sendiri."</p>
+                    <p style="font-style: italic; font-size: 0.6rem; padding: 15px; text-align: center; color: #555; line-height: 1.4;">
+                        "Setiap tahun adalah bab baru dalam hidupmu. Semoga halaman ini penuh dengan kebahagiaan."
+                    </p>
                 </div>
             </div>
 
@@ -198,7 +202,7 @@
                 </div>
                 <div class="back page-paper">
                     <div class="polaroid" style="--r: 2.5deg">
-                        <img src="https://picsum.photos/600/800?random=12">
+                        <img src="https://i.ibb.co.com/X6Vqs7n/IMG-2617.jpg">
                         <p>BIRTHDAYYY🌸</p>
                     </div>
                 </div>
@@ -207,14 +211,14 @@
             <div class="page" id="p3" onclick="nextPage(3)">
                 <div class="front page-paper">
                     <div class="polaroid" style="--r: 1deg">
-                        <img src="https://picsum.photos/600/800?random=13">
-                        <p>YAAAA☀️</p>
+                        <img src="https://i.ibb.co.com/kgVCzzfZ/IMG-4871.jpg ">
+                        <p>YAAAAAA☀️</p>
                     </div>
                 </div>
                 <div class="back page-paper">
                     <div class="polaroid" style="--r: -2deg">
-                        <img src="https://picsum.photos/600/800?random=14">
-                        <p>KAAAAA💫</p>
+                        <img src="https://i.ibb.co.com/XxWcyNDR/IMG-3200.jpg">
+                        <p>KAAAAAA💫</p>
                     </div>
                 </div>
             </div>
@@ -222,12 +226,15 @@
             <div class="page" id="p4" onclick="nextPage(4)">
                 <div class="front page-paper">
                     <div class="polaroid">
-                        <img src="https://picsum.photos/600/800?random=15">
-                        <p>OOOOO💖</p>
+                        <img src="https://i.ibb.co.com/wNmP9dTs/3f7b40cf-c7ec-49d3-9101-2cff929c2431.jpg">
+                        <p>MANDAAAA💖</p>
                     </div>
                 </div>
                 <div class="back cover-back">
-                    <div class="gold-decoration"></div>
+                    <div class="gold-decoration">
+                        <div style="font-size: 1.5rem;"></div>
+                        <p style="font-size: 0.6rem; letter-spacing: 2px;"></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -255,9 +262,7 @@
                             if (flippedCards[0].emoji === flippedCards[1].emoji) {
                                 flippedCards.forEach(c => c.card.classList.add('matched'));
                                 matches += 2;
-                                if (matches === 8) {
-                                    document.getElementById('reveal-game-btn').style.display = 'inline-block';
-                                }
+                                if (matches === 8) document.getElementById('reveal-game-btn').style.display = 'block';
                             } else {
                                 flippedCards.forEach(c => c.card.classList.remove('flipped'));
                             }
@@ -270,13 +275,7 @@
         }
 
         function showGreeting() {
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#db2777', '#ff9a9e', '#fecfef', '#d4af37']
-            });
-
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
             document.getElementById('game-section').style.display = 'none';
             const greet = document.getElementById('greeting-section');
             greet.style.display = 'flex';
@@ -287,8 +286,9 @@
             document.body.classList.add('show-lock');
             document.getElementById('greeting-section').style.display = 'none';
             document.body.style.backgroundColor = 'var(--bg-book)';
-            document.getElementById('book-section').style.display = 'flex';
-            setTimeout(() => document.getElementById('book-section').style.opacity = '1', 50);
+            const bSec = document.getElementById('book-section');
+            bSec.style.display = 'flex';
+            setTimeout(() => bSec.style.opacity = '1', 50);
         }
 
         function nextPage(s) {
@@ -299,24 +299,24 @@
                 book.classList.add('opened');
                 document.getElementById('p1').classList.add('flipped');
                 step = 1;
-            } else if (s > step && s < 4) {
+            } else if (s > step && s < 5) {
                 document.getElementById('p' + s).classList.add('flipped'); 
                 step = s;
-            } else if (s === 4 && step === 3) {
-                document.getElementById('p4').classList.add('flipped'); 
-                step = 4;
             } else if (step === 4) {
+                // Reset Book
                 ["p4", "p3", "p2", "p1"].forEach((id, i) => {
                     setTimeout(() => {
                         document.getElementById(id).classList.remove('flipped');
                         if (i === 3) { 
-                            setTimeout(() => { book.classList.remove('opened'); step = 0; }, 600); 
+                            setTimeout(() => { 
+                                book.classList.remove('opened'); 
+                                step = 0; 
+                            }, 600); 
                         }
                     }, i * 150);
                 });
             }
         }
-        
         initGame();
     </script>
 </body>
